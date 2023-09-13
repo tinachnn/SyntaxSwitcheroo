@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-output',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class OutputComponent {
 
+  @Input() receivedData : any
+  constructor(private messageService : MessageService) {}
 }

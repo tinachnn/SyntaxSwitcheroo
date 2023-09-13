@@ -1,3 +1,6 @@
 <div>
-    <textarea id="inputTextBox" placeholder="{{ text }}" rows="10" columns="50"></textarea>
+    <textarea id="inputTextBox" [(ngModel)]="textAreaValue" placeholder="Enter text" rows="10" columns="50"></textarea>
 </div>
+<button (click)="sendDataToBackend()">Translate</button>
+
+<app-output [receivedData]="data"></app-output>
