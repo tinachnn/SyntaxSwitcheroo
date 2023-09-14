@@ -13,7 +13,21 @@ def handle_data():
         return 'Hello World'
     elif request.method == 'POST':
         data = request.get_json()
-        return jsonify({ 'text' : humps.camelize(data['text']) })
+        text = data['text']
+        convention = data['convention']
+        translation = ''
+        if convention == 'snake-case':
+            translation = humps.decamelize(text)
+        elif convention == 'camel-case':
+            translation = humps.camelize(data['text'])
+        elif convention == 'pascal-case':
+            translation = humps.pascalize(data['text'])
+        elif convention == 'kebab-case':
+            translation = humps.kebabize(data['text'])
+        else:
+            translation = text
+
+        return jsonify({ 'text' : translation })
 
 if __name__ == '__main__':
     app.run()
