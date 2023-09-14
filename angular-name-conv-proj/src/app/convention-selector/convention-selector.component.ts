@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-convention-selector',
@@ -7,5 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 
 export class ConventionSelectorComponent {
-  @Input() value?: string;
+  @Input() value? : string;
+  @Output() valueEmitter = new EventEmitter<string>();
+
+  onValueChange() {
+    this.valueEmitter.emit(this.value)
+  }
 }

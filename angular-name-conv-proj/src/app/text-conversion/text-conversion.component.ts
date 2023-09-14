@@ -14,10 +14,15 @@ export class TextConversionComponent {
   receivedData? : string;
   constructor(private httpService: HttpService, private messageService : MessageService) {}
   
+  onChildValueChange(value : string) {
+    this.outputConv = value;
+  }
+
   sendDataToBackend() {
     this.messageService.add(`sendDataToBackend(): ${this.textAreaValue}`);
     const data = {
-      text : this.textAreaValue
+      text : this.textAreaValue,
+      'convention' : this.outputConv
     }
     this.httpService.postData(data)
       .subscribe(response => {

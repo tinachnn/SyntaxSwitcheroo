@@ -1,5 +1,6 @@
-<select class="convention" [(ngModel)]="value">
+<select class="convention" [(ngModel)]="value" (change)="onValueChange()">
     <option value="camel-case">camelCase</option>
     <option value="snake-case">snake_case</option>
     <option value="pascal-case">PascalCase</option>
+    <option value="kebab-case">kebab-case</option>
 </select>

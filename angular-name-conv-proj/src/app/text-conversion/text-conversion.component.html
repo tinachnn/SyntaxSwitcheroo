@@ -1,5 +1,5 @@
 <app-convention-selector [value] = "inputConv"></app-convention-selector>
-<app-convention-selector [value] = "outputConv"></app-convention-selector>
+<app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
 
 <div>
     <textarea id="inputTextBox" [(ngModel)]="textAreaValue" placeholder="Enter text" rows="10" columns="50"></textarea>
@@ -7,6 +7,6 @@
 <button (click)="sendDataToBackend()">Translate</button>
 
 <div>
-    <textarea id="outputTextBox"  [(ngModel)]="receivedData"  placeholder="Translation" rows="10" columns="50" [style.white-space]="'pre-line'"></textarea>
+    <textarea id="outputTextBox" [(ngModel)]="receivedData"  placeholder="Translation" rows="10" columns="50" [style.white-space]="'pre-line'"></textarea>
 </div>
 
