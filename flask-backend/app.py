@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import re
+import humps
 
 app = Flask(__name__)
 
@@ -11,8 +13,7 @@ def handle_data():
         return 'Hello World'
     elif request.method == 'POST':
         data = request.get_json()
-        # text = data.text     
-        return jsonify(data)
+        return jsonify({ 'text' : humps.camelize(data['text']) })
 
 if __name__ == '__main__':
     app.run()
