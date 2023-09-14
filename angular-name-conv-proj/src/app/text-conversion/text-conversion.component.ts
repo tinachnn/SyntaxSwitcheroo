@@ -3,13 +3,15 @@ import { HttpService } from '../http.service';
 import { MessageService } from '../message.service';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.css']
+  selector: 'app-text-conversion',
+  templateUrl: './text-conversion.component.html',
+  styleUrls: ['./text-conversion.component.css']
 })
-export class InputComponent {
+export class TextConversionComponent {
+  inputConv : string = 'snake-case';
+  outputConv : string = 'camel-case';
   textAreaValue? : string;
-  data? : string;
+  receivedData? : string;
   constructor(private httpService: HttpService, private messageService : MessageService) {}
   
   sendDataToBackend() {
@@ -20,7 +22,7 @@ export class InputComponent {
     this.httpService.postData(data)
       .subscribe(response => {
         this.messageService.add(`InputComponent: Sending data to output`)
-        this.data = response.text
+        this.receivedData = response.text
       });
   }
 }
