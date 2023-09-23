@@ -9,25 +9,26 @@ CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def handle_data():
-    if request.method == 'GET':
-        return 'Hello World'
-    elif request.method == 'POST':
-        data = request.get_json()
-        text = data['text']
-        convention = data['convention']
-        translation = ''
-        if convention == 'snake-case':
-            translation = humps.decamelize(text)
-        elif convention == 'camel-case':
-            translation = humps.camelize(data['text'])
-        elif convention == 'pascal-case':
-            translation = humps.pascalize(data['text'])
-        elif convention == 'kebab-case':
-            translation = humps.kebabize(data['text'])
-        else:
-            translation = text
+    data = request.get_json()
+    lines = data['text'].splitlines()
+    new_lines = []
+    for line in lines:
+        words = line.split()
+        func = get_function(data['convention'])
+        new_words = [func(word) for word in words]
+        new_lines.append(" ".join(new_words))
 
-        return jsonify({ 'text' : translation })
+    return jsonify({ 'text' : "\n".join(new_lines) })
+
+def get_function(convention):
+    if convention == 'snake-case':
+        return humps.decamelize
+    elif convention == 'camel-case':
+        return humps.camelize
+    elif convention == 'pascal-case':
+        return humps.pascalize
+    elif convention == 'kebab-case':
+        return humps.kebabize
 
 if __name__ == '__main__':
     app.run()
