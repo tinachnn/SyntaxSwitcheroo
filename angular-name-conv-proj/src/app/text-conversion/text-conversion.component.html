@@ -2,10 +2,15 @@
 <app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
 
 <div>
-    <textarea id="inputTextBox" [(ngModel)]="textAreaValue" placeholder="Enter text" rows="10" columns="50"></textarea>
+    <textarea id="inputTextBox" [(ngModel)]="textAreaValue" (input)="sendDataToBackend()" placeholder="Enter text" rows="10" columns="50"></textarea>
 </div>
-<button (click)="sendDataToBackend()">Translate</button>
 
 <div>
     <textarea id="outputTextBox" [(ngModel)]="receivedData"  placeholder="Translation" rows="10" columns="50"></textarea>
 </div>
+
+<button id="favorite" (click)="saveData()">Favorite</button>
+<div>
+    <a href="http://127.0.0.1:5000/api/get_data">GET FAVORITES</a>
+</div>
+<!-- <app-saved></app-saved> -->

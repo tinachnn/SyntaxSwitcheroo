@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { TextConversionComponent } from './text-conversion/text-conversion.component';
 import { ConventionSelectorComponent } from './convention-selector/convention-selector.component';
 import { MessagesComponent } from './messages/messages.component';
+import { SavedComponent } from './saved/saved.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { MessagesComponent } from './messages/messages.component';
     TextConversionComponent,
     ConventionSelectorComponent,
     MessagesComponent,
+    SavedComponent,
   ],
   imports: [
     BrowserModule,

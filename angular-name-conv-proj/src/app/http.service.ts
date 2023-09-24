@@ -9,7 +9,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class HttpService {
 
-  private url = 'http://127.0.0.1:5000/';
+  url = 'http://127.0.0.1:5000/';
 
   constructor(private http: HttpClient, private messageService : MessageService) { }
 
@@ -20,7 +20,7 @@ export class HttpService {
   getData() : Observable<any> {
     return this.http.get(this.url)
       .pipe(
-        tap(_ => this.log('get data'))
+        // tap(_ => this.log('get data'))
       )
   }
 
@@ -28,9 +28,17 @@ export class HttpService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  postData(data : any) : Observable<any> {
+  // postData(data : any) : Observable<any> {
+  //   // this.log(`Posting data to backend`)
+  //   return this.http.post(this.url, data, this.httpOptions)
+  //     .pipe(
+  //       // tap(_ => this.log(`Posted data`))
+  //     )
+  // }
+
+  postData(url : string, data : any) : Observable<any> {
     this.log(`Posting data to backend`)
-    return this.http.post(this.url, data, this.httpOptions)
+    return this.http.post(url, data, this.httpOptions)
       .pipe(
         tap(_ => this.log(`Posted data`))
       )
