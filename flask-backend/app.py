@@ -10,7 +10,7 @@ dynamodb = boto3.client('dynamodb')
 CORS(app)
 
 # convert input text to desired naming convention
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def handle_data():
     data = request.get_json()
     lines = data['text'].splitlines()
@@ -76,6 +76,19 @@ def save_data():
         }
     )
     return jsonify({"message": "Data saved successfully"}), 200
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json  # Get the JSON data from the request body
+    username = data.get('username')
+    password = data.get('password')
+    print(username)
+
+    # Check the username and password (add your authentication logic here)
+    if username == 'user' and password == 'password':
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'message': 'Login failed'}), 401
 
 if __name__ == '__main__':
     app.run()

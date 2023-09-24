@@ -1,3 +1,10 @@
-<h1>{{ title }}</h1>
-<app-text-conversion></app-text-conversion>
-<app-messages></app-messages>
+<h1 routerLink="/">{{ title }}</h1>
+<div>
+    <a routerLink="/create">Create Account</a>
+</div>
+<div>
+    <a routerLink="/login">Login</a>
+</div>
+
+<router-outlet></router-outlet>
+<!-- <app-messages></app-messages> -->

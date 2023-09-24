@@ -8,6 +8,9 @@ import { TextConversionComponent } from './text-conversion/text-conversion.compo
 import { ConventionSelectorComponent } from './convention-selector/convention-selector.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SavedComponent } from './saved/saved.component';
+import { LoginComponent } from './login/login.component';
+import { AppRoutingModule } from './app-routing.module';
+import { CreateAccountComponent } from './create-account/create-account.component';
 
 @NgModule({
   declarations: [
@@ -16,11 +19,14 @@ import { SavedComponent } from './saved/saved.component';
     ConventionSelectorComponent,
     MessagesComponent,
     SavedComponent,
+    LoginComponent,
+    CreateAccountComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
