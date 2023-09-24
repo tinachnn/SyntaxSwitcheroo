@@ -54,4 +54,9 @@ export class TextConversionComponent {
     // this.httpService.postData(url, data)
     //   .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
   }
+
+  logout() {
+    this.authService.logout()
+    this.isLoggedIn = false;
+  }
 }

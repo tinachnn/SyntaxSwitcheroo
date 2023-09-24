@@ -1,16 +1,16 @@
-<div>
-    <div *ngIf="isLoggedIn; else loggedOut">
-        <a routerLink="/login">Logout</a>
-    </div>
-    
-    <ng-template #loggedOut>
-        <a routerLink="/create">Create Account</a>
-        <a routerLink="/login">Login</a>
-    </ng-template>
+<div *ngIf="isLoggedIn; else loggedOut">
+    <button (click)="logout()">Logout</button>
 </div>
 
-<app-convention-selector [value] = "inputConv"></app-convention-selector>
-<app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
+<ng-template #loggedOut>
+    <a routerLink="/create">Create Account</a>
+    <a routerLink="/login">Login</a>
+</ng-template>
+
+<div>
+    <app-convention-selector [value] = "inputConv"></app-convention-selector>
+    <app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
+</div>
 
 <div>
     <textarea id="inputTextBox" [(ngModel)]="textAreaValue" (input)="sendDataToBackend()" placeholder="Enter text" rows="10" columns="50"></textarea>

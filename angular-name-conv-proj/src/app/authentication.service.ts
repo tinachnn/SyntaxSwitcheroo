@@ -13,4 +13,8 @@ export class AuthenticationService {
   login(username : string, password : string) : Observable<any> {
     return this.httpService.postData('http://127.0.0.1:5000/api/login', { username, password })
   }
+
+  logout() {
+    this.isLoggedIn = false;
+  }
 }

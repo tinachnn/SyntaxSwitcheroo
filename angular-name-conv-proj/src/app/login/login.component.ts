@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../authentication.service';
 import { MessageService } from '../message.service';
@@ -12,7 +13,7 @@ import { MessageService } from '../message.service';
 export class LoginComponent {
   username : string = '';
   password : string = '';
-  constructor(private http : HttpClient, private router : Router, private authService : AuthenticationService, private messageService : MessageService) {}
+  constructor(private http : HttpClient, private location : Location, private authService : AuthenticationService, private messageService : MessageService) {}
 
   onSubmit() {
     this.authService.login(this.username, this.password)
@@ -20,7 +21,7 @@ export class LoginComponent {
         this.messageService.add(response.message);
         if (response.message == "Login successful") {
           this.authService.isLoggedIn = true;
-          this.router.navigate(['/']);
+          this.location.back();
         }
       }
     )
