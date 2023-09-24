@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { MessageService } from '../message.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-create-account',
@@ -8,7 +10,7 @@ import { MessageService } from '../message.service';
   styleUrls: ['./create-account.component.css']
 })
 export class CreateAccountComponent {
-  constructor(private userService : UserService, private messageService : MessageService) {}
+  constructor(private userService : UserService, private router : Router, private authService : AuthenticationService, private messageService : MessageService) {}
   username : string = '';
   // email : string = '';
   password : string = '';
@@ -18,6 +20,12 @@ export class CreateAccountComponent {
 
   onSubmit() {
     this.userService.createUser(this.username, this.password)
-      .subscribe(response => this.messageService.add(response.message))
+      .subscribe(response => {
+        this.messageService.add(response.message)
+        if (response.message == "Account created successfully") {
+          this.authService.isLoggedIn = true;
+          this.router.navigate(['/']);
+        }
+      })
   }
 }

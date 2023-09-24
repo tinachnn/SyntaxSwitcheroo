@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import re
+from flask_bcrypt import Bcrypt
 import humps
 import boto3
 
@@ -8,6 +8,7 @@ app = Flask(__name__)
 dynamodb = boto3.client('dynamodb')
 
 CORS(app)
+bcrypt = Bcrypt(app)
 
 # convert input text to desired naming convention
 @app.route('/', methods=['POST'])
@@ -101,7 +102,7 @@ def login():
 
     item = response['Items'][0]
     print(item)
-    if password == item['password']['S']:
+    if bcrypt.check_password_hash(item['password']['B'], password):
         return jsonify({'user': { 'userId' : item['userId']['N'] , 'username' : item['username']['S'] }, 'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Incorrect password'})
@@ -130,8 +131,6 @@ def create_user():
         KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
         ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
     )
-
-    print(response)
     
     if response['Count']:
         return jsonify({'message' : 'Account with username already exists'})
@@ -148,6 +147,7 @@ def create_user():
         )
 
         new_user_id = response['Attributes']['next_num']
+        hashed_password = bcrypt.generate_password_hash(password)
         
         # create user with new user id
         response = dynamodb.put_item(
@@ -155,7 +155,7 @@ def create_user():
             Item={
                 'userId': new_user_id,
                 'username': {'S': username},
-                'password': {'S': password}
+                'password': {'B': hashed_password}
             }
     )
     return jsonify({"message": "Account created successfully"}), 200
