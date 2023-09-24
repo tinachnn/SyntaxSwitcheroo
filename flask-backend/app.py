@@ -77,18 +77,66 @@ def save_data():
     )
     return jsonify({"message": "Data saved successfully"}), 200
 
+# log in user
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.json  # Get the JSON data from the request body
     username = data.get('username')
     password = data.get('password')
-    print(username)
+    # print(username)
 
     # Check the username and password (add your authentication logic here)
     if username == 'user' and password == 'password':
         return jsonify({'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Login failed'}), 401
+
+# create user
+@app.route('/api/create', methods=['POST'])
+def create_user():
+    data = request.json
+    username = data.get('username')
+    # email = data.get('email')
+    password = data.get('password')
+    # first_name = data.get('firstName')
+    # last_name = data.get('lastName')
+    # birthdate = data.get('birthdate')
+
+    table_name = 'users'
+    # check if username exists in database
+    response = dynamodb.query(
+            TableName=table_name,
+            IndexName='username-index',
+            KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
+            ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
+    )
+    
+    if 'Items' in response:
+        return jsonify({'message' : 'Account with username already exists'})
+    else:
+        # get next number for user id
+        response = dynamodb.update_item(
+                TableName=table_name,
+                Key={
+                    'userId': {'N' : str(0)}
+                },
+                UpdateExpression='SET next_num = next_num + :val',
+                ExpressionAttributeValues={':val': {'N' : str(1)}},
+                ReturnValues='UPDATED_NEW'
+        )
+
+        new_user_id = response['Attributes']['next_num']
+        
+        # create user with new user id
+        response = dynamodb.put_item(
+            TableName=table_name,
+            Item={
+                'userId': new_user_id,
+                'username': {'S': username},
+                'password': {'S': password}
+            }
+    )
+    return jsonify({"message": "Account created successfully"}), 200
 
 if __name__ == '__main__':
     app.run()

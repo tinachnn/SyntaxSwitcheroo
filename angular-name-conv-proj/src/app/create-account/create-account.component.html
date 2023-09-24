@@ -1,40 +1,28 @@
 <h2>Create an Account</h2>
-<form action="process_registration.php" method="POST">
+<form action="process_registration.php" (ngSubmit)="onSubmit()" method="POST">
     <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+    <input type="text" id="username" name="username" [(ngModel)]="username" required>
     <br><br>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <br><br>
+    <!-- <label for="email">Email:</label>
+    <input type="email" id="email" name="email" [(ngModel)]="email" required>
+    <br><br> -->
 
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    <br><br>
+<!-- 
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" [(ngModel)]="firstName" required>
     <br><br>
 
-    <label for="confirm_password">Confirm Password:</label>
-    <input type="password" id="confirm_password" name="confirm_password" required>
-    <br><br>
-
-    <label for="full_name">Full Name:</label>
-    <input type="text" id="full_name" name="full_name" required>
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" [(ngModel)]="lastName" required>
     <br><br>
 
     <label for="birthdate">Date of Birth:</label>
-    <input type="date" id="birthdate" name="birthdate" required>
-    <br><br>
-
-    <label for="gender">Gender:</label>
-    <select id="gender" name="gender" required>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select>
-    <br><br>
-
-    <label for="newsletter">Subscribe to Newsletter:</label>
-    <input type="checkbox" id="newsletter" name="newsletter">
-    <br><br>
+    <input type="date" id="birthdate" name="birthdate" [(ngModel)]="birthdate" required>
+    <br><br> -->
 
     <button type="submit">Create Account</button>
 </form>
