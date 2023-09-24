@@ -83,18 +83,33 @@ def login():
     data = request.json  # Get the JSON data from the request body
     username = data.get('username')
     password = data.get('password')
-    # print(username)
+
+    if not username or not password:
+        return jsonify({'message': 'Missing required field(s)'})
 
     # Check the username and password (add your authentication logic here)
-    if username == 'user' and password == 'password':
-        return jsonify({'message': 'Login successful'}), 200
+    table_name = 'users'
+    response = dynamodb.query(
+        TableName=table_name,
+        IndexName='username-index',
+        KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
+        ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
+    )
+
+    if response['Count'] == 0:
+        return jsonify({'message': 'Username does not exist'})
+
+    item = response['Items'][0]
+    if password == item['password']:
+        return jsonify({'user': { item['userId'] , item['username'] }, 'message': 'Login successful'}), 200
     else:
-        return jsonify({'message': 'Login failed'}), 401
+        return jsonify({'message': 'Incorrect password'})
 
 # create user
 @app.route('/api/create', methods=['POST'])
 def create_user():
     data = request.json
+    print(data)
     username = data.get('username')
     # email = data.get('email')
     password = data.get('password')
@@ -102,16 +117,22 @@ def create_user():
     # last_name = data.get('lastName')
     # birthdate = data.get('birthdate')
 
+    if not username or not password:
+        return jsonify({'message': 'Missing required field(s)'})
+
     table_name = 'users'
+
     # check if username exists in database
     response = dynamodb.query(
-            TableName=table_name,
-            IndexName='username-index',
-            KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
-            ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
+        TableName=table_name,
+        IndexName='username-index',
+        KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
+        ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
     )
+
+    print(response)
     
-    if 'Items' in response:
+    if response['Count']:
         return jsonify({'message' : 'Account with username already exists'})
     else:
         # get next number for user id
