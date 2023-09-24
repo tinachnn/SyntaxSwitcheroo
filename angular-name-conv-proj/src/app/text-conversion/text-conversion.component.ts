@@ -36,16 +36,14 @@ export class TextConversionComponent {
   } 
 
   saveData() {
-    const url = 'http://127.0.0.1:5000/api/post_data';
-
+    const url = 'http://127.0.0.1:5000/api/post_data'
     const data = {
       'id': 0,
       'input' : this.textAreaValue,
       'output' : this.receivedData,
     }
+
     this.httpService.postData(url, data)
-      .subscribe(
-        response => this.messageService.add(`SaveData : Data successfully saved`)
-      )
+      .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
   }
 }

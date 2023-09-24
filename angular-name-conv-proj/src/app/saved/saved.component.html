@@ -1,1 +1,15 @@
-<p>{{ data }}</p>
+<div>
+    <h3 (click)="display">Favorites:</h3>
+    <table>
+        <tr>
+            <th>User ID</th>
+            <th>Input Text</th>
+            <th>Output Text</th>
+        </tr>
+        <tr *ngFor="let d of data">
+            <td>{{ d.userId.N }}</td>
+            <td>{{ d.inputText.S }}</td>
+            <td>{{ d.outputText.S }}</td>
+        </tr>
+    </table>
+</div>

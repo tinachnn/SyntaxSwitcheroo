@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HttpService } from '../http.service';
 
 @Component({
   selector: 'app-saved',
@@ -7,13 +8,19 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./saved.component.css']
 })
 export class SavedComponent {
-  data?: any[];
-  constructor(private http : HttpClient) {}
+  userId? : number;
+  inputText? : string;
+  outputText? : string;
+  data: any[] = [];
+  display : boolean = false;
+  private url = 'http://127.0.0.1:5000/api/get_data'
+  constructor(private httpService : HttpService) {}
 
   ngOnInit() {
-    this.http.get('/api/get_data')
+    this.httpService.getData(this.url)
       .subscribe((response : any) => {
-        this.data = response.items;
+        console.log(response)
+        this.data = response;
       });
   }
 }
