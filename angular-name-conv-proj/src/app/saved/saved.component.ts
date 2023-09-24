@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpService } from '../http.service';
+import { FavoriteService } from '../favorite.service';
 
 @Component({
   selector: 'app-saved',
@@ -8,19 +7,12 @@ import { HttpService } from '../http.service';
   styleUrls: ['./saved.component.css']
 })
 export class SavedComponent {
-  userId? : number;
-  inputText? : string;
-  outputText? : string;
   data: any[] = [];
-  display : boolean = false;
   private url = 'http://127.0.0.1:5000/api/get_data'
-  constructor(private httpService : HttpService) {}
+  constructor(private favoriteService : FavoriteService) {}
 
   ngOnInit() {
-    this.httpService.getData(this.url)
-      .subscribe((response : any) => {
-        console.log(response)
-        this.data = response;
-      });
+    this.favoriteService.getFavorites()
+      .subscribe( response => this.data = response)
   }
 }

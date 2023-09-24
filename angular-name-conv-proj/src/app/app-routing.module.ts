@@ -6,11 +6,13 @@ import { AppComponent } from './app.component'
 import { LoginComponent } from './login/login.component';
 import { TextConversionComponent } from './text-conversion/text-conversion.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
+import { SavedComponent } from './saved/saved.component';
 
 const routes: Routes = [
   { path: 'convert', component: TextConversionComponent },
   { path: 'create', component: CreateAccountComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'saved', component: SavedComponent},
   { path: '', redirectTo: '/convert', pathMatch: 'full' }
 ];
 

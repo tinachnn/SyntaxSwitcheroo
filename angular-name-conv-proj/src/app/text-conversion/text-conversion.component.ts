@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpService } from '../http.service';
 import { MessageService } from '../message.service';
+import { FavoriteService } from '../favorite.service';
 
 @Component({
   selector: 'app-text-conversion',
@@ -12,7 +13,7 @@ export class TextConversionComponent {
   outputConv : string = 'camel-case';
   textAreaValue? : string;
   receivedData? : string;
-  constructor(private httpService: HttpService, private messageService : MessageService) {}
+  constructor(private httpService: HttpService, private messageService : MessageService, private favoriteService : FavoriteService) {}
   
   onChildValueChange(value : string) {
     this.outputConv = value;
@@ -36,14 +37,17 @@ export class TextConversionComponent {
   } 
 
   saveData() {
-    const url = 'http://127.0.0.1:5000/api/post_data'
+    // const url = 'http://127.0.0.1:5000/api/post_data'
     const data = {
       'id': 0,
       'input' : this.textAreaValue,
       'output' : this.receivedData,
     }
 
-    this.httpService.postData(url, data)
+    this.favoriteService.addFavorite(data)
       .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
+
+    // this.httpService.postData(url, data)
+    //   .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
   }
 }
