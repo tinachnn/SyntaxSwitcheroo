@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpService } from '../http.service';
 import { MessageService } from '../message.service';
 import { FavoriteService } from '../favorite.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-text-conversion',
@@ -9,11 +10,14 @@ import { FavoriteService } from '../favorite.service';
   styleUrls: ['./text-conversion.component.css']
 })
 export class TextConversionComponent {
+  isLoggedIn : boolean = false;
   inputConv : string = 'snake-case';
   outputConv : string = 'camel-case';
   textAreaValue? : string;
   receivedData? : string;
-  constructor(private httpService: HttpService, private messageService : MessageService, private favoriteService : FavoriteService) {}
+  constructor(private httpService: HttpService, private authService : AuthenticationService, private messageService : MessageService, private favoriteService : FavoriteService) {
+    this.isLoggedIn = this.authService.isLoggedIn;
+  }
   
   onChildValueChange(value : string) {
     this.outputConv = value;

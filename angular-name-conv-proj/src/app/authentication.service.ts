@@ -6,6 +6,7 @@ import { HttpService } from './http.service';
   providedIn: 'root'
 })
 export class AuthenticationService {
+  isLoggedIn : boolean = false;
 
   constructor( private httpService : HttpService) { }
 

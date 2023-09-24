@@ -100,8 +100,9 @@ def login():
         return jsonify({'message': 'Username does not exist'})
 
     item = response['Items'][0]
-    if password == item['password']:
-        return jsonify({'user': { item['userId'] , item['username'] }, 'message': 'Login successful'}), 200
+    print(item)
+    if password == item['password']['S']:
+        return jsonify({'user': { 'userId' : item['userId']['N'] , 'username' : item['username']['S'] }, 'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Incorrect password'})
 

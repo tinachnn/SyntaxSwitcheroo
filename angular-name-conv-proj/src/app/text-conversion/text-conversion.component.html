@@ -1,3 +1,14 @@
+<div>
+    <div *ngIf="isLoggedIn; else loggedOut">
+        <a routerLink="/login">Logout</a>
+    </div>
+    
+    <ng-template #loggedOut>
+        <a routerLink="/create">Create Account</a>
+        <a routerLink="/login">Login</a>
+    </ng-template>
+</div>
+
 <app-convention-selector [value] = "inputConv"></app-convention-selector>
 <app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
 
