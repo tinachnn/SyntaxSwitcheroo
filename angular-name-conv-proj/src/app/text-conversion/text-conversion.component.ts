@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { HttpService } from '../http.service';
 import { MessageService } from '../message.service';
 import { FavoriteService } from '../favorite.service';
@@ -11,12 +13,16 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class TextConversionComponent {
   isLoggedIn : boolean = false;
+  username? : string;
   inputConv : string = 'snake-case';
   outputConv : string = 'camel-case';
   textAreaValue? : string;
   receivedData? : string;
-  constructor(private httpService: HttpService, private authService : AuthenticationService, private messageService : MessageService, private favoriteService : FavoriteService) {
+  constructor(private httpService: HttpService, private router : Router, private authService : AuthenticationService, private messageService : MessageService, private favoriteService : FavoriteService) {
     this.isLoggedIn = this.authService.isLoggedIn;
+    if (this.isLoggedIn) {
+      this.username = this.authService.currentUser.username;
+    }
   }
   
   onChildValueChange(value : string) {
@@ -41,18 +47,18 @@ export class TextConversionComponent {
   } 
 
   saveData() {
-    // const url = 'http://127.0.0.1:5000/api/post_data'
-    const data = {
-      'id': 0,
-      'input' : this.textAreaValue,
-      'output' : this.receivedData,
+    if (!this.isLoggedIn) {
+      this.router.navigate(['/login']);
+    } 
+    else {
+      const data = {
+        'input' : this.textAreaValue,
+        'output' : this.receivedData,
+      }
+
+      this.favoriteService.addFavorite(this.authService.currentUser.userId, data)
+        .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
     }
-
-    this.favoriteService.addFavorite(data)
-      .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
-
-    // this.httpService.postData(url, data)
-    //   .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
   }
 
   logout() {

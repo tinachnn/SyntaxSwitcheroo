@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 import humps
 import boto3
+import json
 
 app = Flask(__name__)
 dynamodb = boto3.client('dynamodb')
@@ -49,32 +50,48 @@ def get_data():
 def get_item(id):
     # return 'Hello World'
     table_name = 'users'
+    print(id)
     response = dynamodb.get_item(
         TableName=table_name,
         Key={
-            'userId': {'N': id}
+            'userId': {'N': str(id)}
         }
     )
 
     if 'Item' in response:
-        item = response['Item']
-        return jsonify(item), 200  # Return the item as JSON
+        favorites = response['Item']['favorites']['L']
+        temp = [json.loads(f['S']) for f in favorites]
+        print(temp)
+        return jsonify(temp), 200  # Return the item as JSON
     else:
         return jsonify({"error": "Item not found"}), 404
 
-# post item to database
-@app.route('/api/post_data', methods=['POST'])
-def save_data():
+# update items
+@app.route('/api/post_data/<id>', methods=['POST'])
+def save_data(id):
     data = request.get_json()
     table_name = 'users'
-    response = dynamodb.put_item(
+    json_object = json.dumps(data)
+    response = dynamodb.update_item(
         TableName=table_name,
-        Item={
-            'userId': {'N': str(data['id'])},
-            'inputText': {'S': data['input']},
-            'outputText': {'S': data['output']}
-            # Add other attributes as needed
+        Key={'userId' : {'N' : id}},
+        UpdateExpression='SET favorites = list_append(if_not_exists(favorites, :empty_list), :fave)',
+        ExpressionAttributeValues={
+            ':fave' : {'L': [{'S' : json_object}]},
+            ':empty_list' : {'L' : []}
         }
+    )
+    return jsonify({"message": "Data saved successfully"}), 200
+
+# delete
+@app.route('/api/delete_data/<id>/<idx>', methods=['DELETE'])
+def delete_data(id, idx):
+    table_name = 'users'
+    update_exp = f"REMOVE favorites[{idx}]"
+    response = dynamodb.update_item(
+        TableName=table_name,
+        Key={'userId' : {'N' : id}},
+        UpdateExpression=update_exp
     )
     return jsonify({"message": "Data saved successfully"}), 200
 
@@ -158,7 +175,7 @@ def create_user():
                 'password': {'B': hashed_password}
             }
     )
-    return jsonify({"message": "Account created successfully"}), 200
+    return jsonify({'user': {'userId' : new_user_id['N'], 'username' : username }, 'message': "Account created successfully"}), 200
 
 if __name__ == '__main__':
     app.run()

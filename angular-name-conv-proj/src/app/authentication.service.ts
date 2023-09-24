@@ -7,6 +7,7 @@ import { HttpService } from './http.service';
 })
 export class AuthenticationService {
   isLoggedIn : boolean = false;
+  currentUser? : any = null;
 
   constructor( private httpService : HttpService) { }
 
@@ -16,5 +17,6 @@ export class AuthenticationService {
 
   logout() {
     this.isLoggedIn = false;
+    this.currentUser = null;
   }
 }

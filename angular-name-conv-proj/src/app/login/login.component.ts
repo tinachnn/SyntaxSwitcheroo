@@ -21,8 +21,12 @@ export class LoginComponent {
         this.messageService.add(response.message);
         if (response.message == "Login successful") {
           this.authService.isLoggedIn = true;
+          const user = response.user;
+          this.authService.currentUser = { 
+            'userId' : user['userId'], 
+            'username' : user['username'] 
+          };
           this.router.navigate(['/']);
-          // console.log(this.location.back())
         }
       }
     )

@@ -2,14 +2,15 @@
     <h3>Favorites:</h3>
     <table>
         <tr>
-            <th>User ID</th>
-            <th>Input Text</th>
-            <th>Output Text</th>
+            <!-- <th>User ID</th> -->
+            <th>Input</th>
+            <th>Output</th>
         </tr>
-        <tr *ngFor="let d of data">
-            <td>{{ d.userId.N }}</td>
-            <td>{{ d.inputText.S }}</td>
-            <td>{{ d.outputText.S }}</td>
+        <tr *ngFor="let d of data; let i = index">
+            <!-- <td>{{ d.userId.N }}</td> -->
+            <td>{{ d.input }}</td>
+            <td>{{ d.output }}</td>
+            <td><button (click)="onDelete(i)">Delete</button></td>
         </tr>
     </table>
 </div>

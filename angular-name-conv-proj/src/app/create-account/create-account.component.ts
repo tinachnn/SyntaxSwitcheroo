@@ -24,6 +24,11 @@ export class CreateAccountComponent {
         this.messageService.add(response.message)
         if (response.message == "Account created successfully") {
           this.authService.isLoggedIn = true;
+          const user = response.user;
+          this.authService.currentUser = { 
+            'userId' : user['userId'], 
+            'username' : user['username'] 
+          };
           this.router.navigate(['/']);
         }
       })

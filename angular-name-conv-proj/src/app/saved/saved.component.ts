@@ -16,7 +16,19 @@ export class SavedComponent {
   }
 
   ngOnInit() {
-    this.favoriteService.getFavorites()
-      .subscribe( response => this.data = response)
+    if (this.isLoggedIn) {
+      this.favoriteService.getFavorites(this.authService.currentUser.userId)
+        .subscribe( response => {
+          this.data = response;
+        })
+    }
+  }
+
+  onDelete(index : number) {
+    this.data.splice(index, 1)
+    this.favoriteService.deleteFavorite(this.authService.currentUser.userId, index)
+      .subscribe( response => {
+        console.log('Successfully deleted')
+      })
   }
 }

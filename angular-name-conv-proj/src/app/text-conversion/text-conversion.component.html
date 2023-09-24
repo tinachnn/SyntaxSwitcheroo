@@ -1,4 +1,5 @@
 <div *ngIf="isLoggedIn; else loggedOut">
+    <p>Welcome back {{ username }}!</p>
     <button (click)="logout()">Logout</button>
 </div>
 
