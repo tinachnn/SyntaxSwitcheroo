@@ -74,22 +74,19 @@ def add_favorite(id):
         }
     )
 
-    if response['Count']:
-        error = 'Already favorited...'
-        return jsonify(error), 400
-
+    if response['Count'] == 0:
     # add to favorites
-    response = dynamodb.update_item(
-        TableName=TABLE_NAME,
-        Key={'userId' : {'N' : id}},
-        UpdateExpression='SET favorites = list_append(if_not_exists(favorites, :empty_list), :fave)',
-        ExpressionAttributeValues={
-            ':fave' : {'L': [{'S' : data}]},
-            ':empty_list' : {'L' : []}
-        }
-    )
+        response = dynamodb.update_item(
+            TableName=TABLE_NAME,
+            Key={'userId' : {'N' : id}},
+            UpdateExpression='SET favorites = list_append(if_not_exists(favorites, :empty_list), :fave)',
+            ExpressionAttributeValues={
+                ':fave' : {'L': [{'S' : data}]},
+                ':empty_list' : {'L' : []}
+            }
+        )
 
-    return jsonify('Added to favorites!'), 200
+    return '', 200
 
 # delete from favorites
 @app.route('/api/delete_favorite/<id>/<idx>', methods=['DELETE'])

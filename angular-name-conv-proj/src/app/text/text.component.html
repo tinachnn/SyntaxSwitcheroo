@@ -10,37 +10,22 @@
     </ng-template>
 </div>
 
-<div class="convention-options">
-    <!-- <span>Convert to: </span> -->
-    <!-- <select class="convention" [(ngModel)]="convention" (change)="onConvChange()">
-        <option value="camel-case">camelCase</option>
-        <option value="snake-case">snake_case</option>
-        <option value="pascal-case">PascalCase</option>
-        <option value="kebab-case">kebab-case</option>
-    </select> -->
-    <div>
-        <input type="radio" id="snake-case" value="snake-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
-        <label for="snake-case">snake_case</label>
-        <input type="radio" id="camel-case" value="camel-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
-        <label for="camel-case">camelCase</label>
-        <input type="radio" id="pascal-case" value="pascal-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
-        <label for="pascal-case">PascalCase</label>
-        <input type="radio" id="kebab-case" value="kebab-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
-        <label for="kebab-case">kebab-case</label>
-    </div>
+<div class="conv-group">
+    <button class="conv-button" (click)="selectConv('snake-case')" [class.selected]="convention === 'snake-case'">snake_case</button>
+    <button class="conv-button" (click)="selectConv('camel-case')" [class.selected]="convention === 'camel-case'">camelCase</button>
+    <button class="conv-button" (click)="selectConv('pascal-case')" [class.selected]="convention === 'pascal-case'">PascalCase</button>
+    <button class="conv-button" (click)="selectConv('kebab-case')" [class.selected]="convention === 'kebab-case'">kebab-case</button>
 </div>
 
 <div class="textarea-container">
-    <textarea id="inputTextBox" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
-    <textarea id="outputTextBox" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50"></textarea>
-</div>
-
-<div>
-    <button (click)="onFavorite()" id="favorite" [disabled]="inputData.trim() === ''">Favorite</button>
-</div>
-
-<div *ngIf="message">
-    {{ message }}
+    <div class="text-icon-container">
+        <span class="material-symbols-outlined icon">close</span>
+        <textarea class="input" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
+    </div>
+    <div class="text-icon-container">
+        <span class="material-symbols-outlined icon" (click)="onFavorite()" [class.selected]="favorite">star</span>
+        <textarea class="output" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50" disabled></textarea>
+    </div>
 </div>
 
 <div>

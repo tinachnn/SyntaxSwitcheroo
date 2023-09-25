@@ -15,29 +15,30 @@ export class TextComponent {
   username? : string;
   userId? : number
 
-  convention : string = 'camel-case';
+  convention : string = 'snake-case';
   inputData : string = '';
   outputData : string= '';
 
-  message? : string;
+  favorite : boolean = false;
 
   constructor(private router : Router, private conversionService: ConversionService, private authService : AuthenticationService, private favoriteService : FavoriteService) {
     this.isLoggedIn = this.authService.isLoggedIn;
     this.username = this.authService.currentUser?.username;
   }
 
+  selectConv(option : string) {
+    this.convention = option;
+    this.onTextInput();
+  }
+
   // converts text when input changes
   onTextInput() {
-    this.message = '';
+    this.favorite = false;
+
     this.conversionService.convertText(this.inputData, this.convention)
       .subscribe(response => {
         this.outputData = response
-      });
-  } 
-
-  // re converts text if convention changes
-  onConvChange() {
-    this.onTextInput();
+    });
   }
 
   // add item to favorites
@@ -48,15 +49,8 @@ export class TextComponent {
     } 
     else {
       this.favoriteService.addFavorite(this.authService.currentUser.userId, this.inputData, this.outputData)
-        .subscribe({
-          next : (response) => { 
-            this.message = response;
-          },
-          error : (error) => { 
-            this.message = error.error;
-          }
-        });
-    }
+        .subscribe(response => this.favorite = true);
+    } 
   }
 
   onLogout() {
