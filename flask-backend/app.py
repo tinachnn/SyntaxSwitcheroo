@@ -48,9 +48,7 @@ def get_data():
 # get item by id
 @app.route('/api/get_data/<id>', methods=['GET'])
 def get_item(id):
-    # return 'Hello World'
     table_name = 'users'
-    print(id)
     response = dynamodb.get_item(
         TableName=table_name,
         Key={
@@ -61,7 +59,6 @@ def get_item(id):
     if 'Item' in response:
         favorites = response['Item']['favorites']['L']
         temp = [json.loads(f['S']) for f in favorites]
-        print(temp)
         return jsonify(temp), 200  # Return the item as JSON
     else:
         return jsonify({"error": "Item not found"}), 404
@@ -132,7 +129,6 @@ def login():
         return jsonify({'message': 'Username does not exist'})
 
     item = response['Items'][0]
-    print(item)
     if bcrypt.check_password_hash(item['password']['B'], password):
         return jsonify({'user': { 'userId' : item['userId']['N'] , 'username' : item['username']['S'] }, 'message': 'Login successful'}), 200
     else:
@@ -142,7 +138,6 @@ def login():
 @app.route('/api/create', methods=['POST'])
 def create_user():
     data = request.json
-    print(data)
     username = data.get('username')
     # email = data.get('email')
     password = data.get('password')

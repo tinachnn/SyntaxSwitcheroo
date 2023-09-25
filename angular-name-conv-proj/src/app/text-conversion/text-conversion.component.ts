@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { HttpService } from '../http.service';
 import { FavoriteService } from '../favorite.service';
 import { AuthenticationService } from '../authentication.service';
+import { ConversionService } from '../conversion.service';
 
 @Component({
   selector: 'app-text-conversion',
@@ -17,7 +17,7 @@ export class TextConversionComponent {
   outputConv : string = 'camel-case';
   textAreaValue? : string;
   receivedData? : string;
-  constructor(private httpService: HttpService, private router : Router, private authService : AuthenticationService, private favoriteService : FavoriteService) {
+  constructor(private conversionService: ConversionService, private router : Router, private authService : AuthenticationService, private favoriteService : FavoriteService) {
     this.isLoggedIn = this.authService.isLoggedIn;
     if (this.isLoggedIn) {
       this.username = this.authService.currentUser.username;
@@ -29,18 +29,15 @@ export class TextConversionComponent {
   }
 
   sendDataToBackend() {
-    console.log(this.textAreaValue);
-    const url = 'http://127.0.0.1:5000/';
-    
     const data = {
       text : this.textAreaValue,
       'convention' : this.outputConv
     };
 
-    this.httpService.postData(url, data)
+    this.conversionService.convertText(data)
       .subscribe(response => {
         this.receivedData = response.text
-      });
+    });
   } 
 
   saveData() {
