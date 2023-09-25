@@ -4,13 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component'
 import { LoginComponent } from './login/login.component';
-import { TextConversionComponent } from './text-conversion/text-conversion.component';
-import { CreateAccountComponent } from './create-account/create-account.component';
+import { TextComponent } from './text/text.component';
+import { CreateComponent } from './create/create.component';
 import { SavedComponent } from './saved/saved.component';
 
 const routes: Routes = [
-  { path: '', component: TextConversionComponent },
-  { path: 'create', component: CreateAccountComponent },
+  { path: '', component: TextComponent },
+  { path: 'create', component: CreateComponent },
   { path: 'login', component: LoginComponent },
   { path: 'saved', component: SavedComponent},
 ];

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FavoriteService } from '../favorite.service';
-import { AuthenticationService } from '../authentication.service';
+import { FavoriteService } from '../services/favorite.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-saved',

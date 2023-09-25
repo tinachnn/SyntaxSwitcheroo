@@ -8,9 +8,19 @@
     <a routerLink="/login">Login</a>
 </ng-template>
 
-<div>
+<!-- <div>
     <app-convention-selector [value] = "inputConv"></app-convention-selector>
     <app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
+</div> -->
+
+<div>
+    Convert to:
+    <select class="convention" [(ngModel)]="convention" (change)="onConvChange()">
+        <option value="camel-case">camelCase</option>
+        <option value="snake-case">snake_case</option>
+        <option value="pascal-case">PascalCase</option>
+        <option value="kebab-case">kebab-case</option>
+    </select>
 </div>
 
 <div>

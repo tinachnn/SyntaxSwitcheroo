@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { FavoriteService } from '../favorite.service';
-import { AuthenticationService } from '../authentication.service';
-import { ConversionService } from '../conversion.service';
+import { FavoriteService } from '../services/favorite.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { ConversionService } from '../services/conversion.service';
 
 @Component({
-  selector: 'app-text-conversion',
-  templateUrl: './text-conversion.component.html',
-  styleUrls: ['./text-conversion.component.css']
+  selector: 'app-text',
+  templateUrl: './text.component.html',
+  styleUrls: ['./text.component.css']
 })
-export class TextConversionComponent {
+export class TextComponent {
   isLoggedIn : boolean = false;
   username? : string;
-  inputConv : string = 'snake-case';
-  outputConv : string = 'camel-case';
+  convention : string = 'camel-case';
   textAreaValue? : string;
   receivedData? : string;
   constructor(private conversionService: ConversionService, private router : Router, private authService : AuthenticationService, private favoriteService : FavoriteService) {
@@ -24,14 +23,14 @@ export class TextConversionComponent {
     }
   }
   
-  onChildValueChange(value : string) {
-    this.outputConv = value;
+  onConvChange() {
+    this.sendDataToBackend();
   }
 
   sendDataToBackend() {
     const data = {
       text : this.textAreaValue,
-      'convention' : this.outputConv
+      'convention' : this.convention
     };
 
     this.conversionService.convertText(data)

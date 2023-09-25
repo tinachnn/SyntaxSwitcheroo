@@ -4,21 +4,19 @@ import { HttpClientModule } from  '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { TextConversionComponent } from './text-conversion/text-conversion.component';
-import { ConventionSelectorComponent } from './convention-selector/convention-selector.component';
+import { TextComponent } from './text/text.component';
 import { SavedComponent } from './saved/saved.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
-import { CreateAccountComponent } from './create-account/create-account.component';
+import { CreateComponent } from './create/create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TextConversionComponent,
-    ConventionSelectorComponent,
+    TextComponent,
     SavedComponent,
     LoginComponent,
-    CreateAccountComponent,
+    CreateComponent,
   ],
   imports: [
     BrowserModule,
