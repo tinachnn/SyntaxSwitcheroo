@@ -19,7 +19,7 @@
 
 <div class="textarea-container">
     <div class="text-icon-container">
-        <span class="material-symbols-outlined icon">close</span>
+        <span class="material-symbols-outlined icon" (click)="clearInput()">close</span>
         <textarea class="input" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
     </div>
     <div class="text-icon-container">

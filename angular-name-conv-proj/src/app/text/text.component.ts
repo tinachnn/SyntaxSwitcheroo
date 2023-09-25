@@ -41,6 +41,11 @@ export class TextComponent {
     });
   }
 
+  clearInput() {
+    this.inputData = '';
+    this.onTextInput();
+  }
+
   // add item to favorites
   onFavorite() {
     // redirect to login page if not logged in
