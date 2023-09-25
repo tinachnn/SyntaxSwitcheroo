@@ -9,7 +9,7 @@ import { FavoriteService } from '../services/favorite.service';
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent {
-  favorites: { input : string; output : string }[] = [];
+  favorites: { date : Date; input : string; output : string; convention : string }[] = [];
   isLoggedIn : boolean;
 
   constructor(private authService : AuthenticationService ,private favoriteService : FavoriteService) {

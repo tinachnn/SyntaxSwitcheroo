@@ -18,9 +18,9 @@ export class FavoriteService {
     return this.http.get(url);
   }
 
-  addFavorite(id : number, input : string, output : string) : Observable<any>  {
+  addFavorite(id : number, input : string, output : string, convention : string) : Observable<any>  {
     const url = `http://127.0.0.1:5000/api/add_favorite/${id}`;
-    return this.http.post(url, { input , output });
+    return this.http.post(url, { input , output, convention });
   }
 
   deleteFavorite(id : number, index : number) : Observable<any> {

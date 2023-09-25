@@ -1,6 +1,6 @@
 <div class="button-container">
     <div *ngIf="isLoggedIn; else loggedOut">
-        <span>Welcome back {{ username }}!</span>
+        <span class="welcome">Welcome back {{ username }}!</span>
         <a class="button-link" href="#" (click)="onLogout()">Logout</a>
     </div>
     
@@ -20,14 +20,17 @@
 <div class="textarea-container">
     <div class="text-icon-container">
         <span class="material-symbols-outlined icon" (click)="clearInput()">close</span>
-        <textarea class="input" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
+        <textarea class="input" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" (input)="autoExpand()"></textarea>
     </div>
     <div class="text-icon-container">
         <span class="material-symbols-outlined icon" (click)="onFavorite()" [class.selected]="favorite">star</span>
-        <textarea class="output" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50" disabled></textarea>
+        <textarea class="output" [(ngModel)]="outputData" placeholder="Translation" (input)="autoExpand()" disabled></textarea>
     </div>
 </div>
 
-<div>
-    <a routerLink="/saved">Get favorites</a>
+<div class="saved-container">
+    <a routerLink="/saved">
+        <span class="material-symbols-outlined saved-icon">stars</span>
+        <p>Saved</p>
+    </a>
 </div>

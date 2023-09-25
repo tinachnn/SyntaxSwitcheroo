@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 import humps
 import boto3
 import json
+import datetime
 
 app = Flask(__name__)
 dynamodb = boto3.client('dynamodb')
@@ -61,6 +62,7 @@ def add_favorite(id):
     if not data.get('input') or not data.get('output'):
         return '', 400
 
+    data['date'] = str(datetime.datetime.now())
     data = json.dumps(data)
 
     # check if already exists in db
@@ -155,7 +157,7 @@ def create_user():
     )
     
     if response['Count'] > 0:
-        error = 'Account with username already exists'
+        error = 'Username already exists'
         return jsonify(error), 400
 
     # get next number for user id

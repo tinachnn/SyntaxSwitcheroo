@@ -1,28 +1,43 @@
+<h2>Favorites:</h2>
 <div *ngIf="isLoggedIn; else loggedOut">
-    <div *ngIf="favorites.length > 0; else noFavorites">
-        <h3>Favorites:</h3>
+    <div class="table-container" *ngIf="favorites.length > 0; else noFavorites">
         <table>
-            <tr>
-                <th>Input</th>
-                <th>Output</th>
-            </tr>
-            <tr *ngFor="let f of favorites; let i = index">
-                <td>{{ f.input }}</td>
-                <td>{{ f.output }}</td>
-                <td><button (click)="onDelete(i)">Delete</button></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>DATE</th>
+                    <th>INPUT</th>
+                    <th>OUTPUT</th>
+                    <th>CONVENTION</th>
+                    <th>DELETE?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let f of favorites; let i = index">
+                    <td>{{ f.date | date }}</td>
+                    <td>{{ f.input }}</td>
+                    <td>{{ f.output }}</td>
+                    <td> {{ f.convention }}</td>
+                    <td>
+                        <span class="material-symbols-outlined icon" (click)="onDelete(i)">delete</span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
     
     <ng-template #noFavorites>
-        <p>Add to favorites to get started</p>
+        <p>Add to favorites to get started.</p>
     </ng-template>
 
-    <a routerLink="/">Go back</a>
+    <div class="button-container">
+        <a class="button-link" routerLink="/">Go Back</a>
+    </div>
 </div>
 
 <ng-template #loggedOut>
     <p>Please log in to see your favorites.</p>
-    <a routerLink="/login">Login</a>
+    <div class="button-container">
+        <a class="button-link" routerLink="/login">Login</a>
+    </div>
 </ng-template>
 

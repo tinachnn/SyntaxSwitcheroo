@@ -3,9 +3,9 @@
     display: inline-block;
     padding: 8px 10px;
     text-decoration: none;
-    background-color: #007bff;
-    color: #fff;
-    border: 1px solid #007bff;
+    background-color: rgb(0, 123, 255);
+    color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 123, 255);
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
@@ -13,15 +13,19 @@
 }
 
 .button-link:hover {
-    color: #fff;
-    background-color: #0056b3;
-    border-color: #0056b3;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 86, 179);
+    border-color: rgb(0, 86, 179);
 }
 
 .button-container {
     position : absolute;
     top : 24px;
     right : 0;
+}
+
+.welcome {
+    margin-right : 10px;
 }
 
 /* convention selection */
@@ -32,7 +36,7 @@
 
 .conv-button {
     padding: 10px 15px;
-    color: #0056b3;
+    color: rgb(0, 86, 179);
     background-color: white;
     border: solid 1px rgb(232, 232, 232);
     cursor: pointer;
@@ -46,7 +50,7 @@
 }
 
 .conv-button.selected {
-    background-color: rgba(232,240,254,255);
+    background-color: rgba(232,240,254);
 }
 
 /* text area */
@@ -66,12 +70,15 @@
   
 textarea {
     resize : none;
+    overflow: hidden;
     border-radius: 10px;
     width: 100%;
-    height: 200px;
-    font-size: 20px;
+    min-height: 200px;
+    max-height: none;
+    font-size: 18px;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
+    line-height: 1.5;
     flex: 1;
     padding: 10px 30px 10px 10px;
 }
@@ -89,6 +96,7 @@ input:focus {
    border: none;
 }
 
+/* text area icons */
 .icon {
     position: absolute;
     top: 10px; 
@@ -99,9 +107,33 @@ input:focus {
 }
 
 .icon:hover {
-    color: #007bff;
+    color: rgb(0, 123, 255);
 }
 
 .icon.selected {
-    color: #007bff;
+    color: rgb(0, 123, 255);
+}
+
+/* saved */
+.saved-container {
+    margin: 100px;
+}
+
+.saved-icon {
+    font-size: 80px;
+    color: rgb(208, 208, 208);
+}
+
+.saved-icon:hover {
+    color: rgb(0, 123, 255);
+}
+
+p {
+    margin: auto;
+    font-size: 14px;
+    color : rgb(160, 160, 160);
+}
+
+a {
+    text-decoration: none;
 }

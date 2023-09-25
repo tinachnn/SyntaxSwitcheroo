@@ -1,0 +1,72 @@
+h2 {
+    padding-top: 10px;
+}
+
+/* table styling */
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    width: 90%;
+    table-layout: fixed;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid rgb(221, 221, 221);
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: rgb(229, 229, 229);
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(245, 245, 245);
+}
+
+.icon {
+    color: rgb(17, 17, 17);
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: rgb(102, 102, 102);
+}
+
+/* button styling */
+.button-link {
+    display: inline-block;
+    padding: 8px 10px;
+    text-decoration: none;
+    background-color: rgb(0, 123, 255);
+    color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 123, 255);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    margin-right: 15px;
+}
+
+.button-link:hover {
+    color:rgb(255, 255, 255);
+    background-color: rgb(0, 86, 179);
+    border-color: rgb(0, 86, 179);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+p {
+    padding-top: 15px;
+}

@@ -5,7 +5,7 @@
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" [(ngModel)]="username" #name="ngModel" required>
             <div *ngIf="name.invalid && (name.dirty || form.submitted)" class="alert">
-                <div *ngIf="name.errors?.['required']">
+                <div class="error" *ngIf="name.errors?.['required']">
                     Name is required.
                 </div>
             </div>
@@ -15,7 +15,7 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" [(ngModel)]="password" #pw="ngModel" required>
             <div *ngIf="pw.invalid && (pw.dirty || form.submitted)" class="alert">
-                <div *ngIf="pw.errors?.['required']">
+                <div class="error" *ngIf="pw.errors?.['required']">
                     Password is required.
                 </div>
             </div>
@@ -24,7 +24,7 @@
         <button type="submit">Login</button>
     </form>
 
-    <div *ngIf="errorMessage">
+    <div class="error" *ngIf="errorMessage">
         <p>{{ errorMessage }}</p>
     </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ConversionService } from '../services/conversion.service';
@@ -21,7 +21,7 @@ export class TextComponent {
 
   favorite : boolean = false;
 
-  constructor(private router : Router, private conversionService: ConversionService, private authService : AuthenticationService, private favoriteService : FavoriteService) {
+  constructor(private router : Router, private conversionService: ConversionService, private authService : AuthenticationService, private favoriteService : FavoriteService, private elementRef: ElementRef) {
     this.isLoggedIn = this.authService.isLoggedIn;
     this.username = this.authService.currentUser?.username;
   }
@@ -53,7 +53,7 @@ export class TextComponent {
       this.router.navigate(['/login']);
     } 
     else {
-      this.favoriteService.addFavorite(this.authService.currentUser.userId, this.inputData, this.outputData)
+      this.favoriteService.addFavorite(this.authService.currentUser.userId, this.inputData, this.outputData, this.convention)
         .subscribe(response => this.favorite = true);
     } 
   }
@@ -61,5 +61,11 @@ export class TextComponent {
   onLogout() {
     this.authService.logout();
     this.isLoggedIn = false;
+  }
+
+  autoExpand() {
+    const textarea = this.elementRef.nativeElement.querySelector('textarea');
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 }
