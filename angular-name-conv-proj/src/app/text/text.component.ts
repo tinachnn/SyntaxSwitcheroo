@@ -29,12 +29,10 @@ export class TextComponent {
   // converts text when input changes
   onTextInput() {
     this.message = '';
-    if (this.inputData) {
-      this.conversionService.convertText(this.inputData, this.convention)
-        .subscribe(response => {
-          this.outputData = response
-        });
-    }
+    this.conversionService.convertText(this.inputData, this.convention)
+      .subscribe(response => {
+        this.outputData = response
+      });
   } 
 
   // re converts text if convention changes

@@ -1,33 +1,38 @@
-<div>
+<div class="button-container">
     <div *ngIf="isLoggedIn; else loggedOut">
         <span>Welcome back {{ username }}!</span>
-        <a href="#" (click)="onLogout()">Logout</a>
+        <a class="button-link" href="#" (click)="onLogout()">Logout</a>
     </div>
     
-    <ng-template #loggedOut>
-        <a routerLink="/create">Create Account</a>
-        <a routerLink="/login">Login</a>
+    <ng-template #loggedOut class="button-container">
+        <a class="button-link" routerLink="/create">Create Account</a>
+        <a class="button-link" routerLink="/login">Login</a>
     </ng-template>
 </div>
 
-<div>
-    <span>Convert to: </span>
-    <select class="convention" [(ngModel)]="convention" (change)="onConvChange()">
+<div class="convention-options">
+    <!-- <span>Convert to: </span> -->
+    <!-- <select class="convention" [(ngModel)]="convention" (change)="onConvChange()">
         <option value="camel-case">camelCase</option>
         <option value="snake-case">snake_case</option>
         <option value="pascal-case">PascalCase</option>
         <option value="kebab-case">kebab-case</option>
-    </select>
+    </select> -->
+    <div>
+        <input type="radio" id="snake-case" value="snake-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
+        <label for="snake-case">snake_case</label>
+        <input type="radio" id="camel-case" value="camel-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
+        <label for="camel-case">camelCase</label>
+        <input type="radio" id="pascal-case" value="pascal-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
+        <label for="pascal-case">PascalCase</label>
+        <input type="radio" id="kebab-case" value="kebab-case" [(ngModel)]="convention" (ngModelChange)="onConvChange()">
+        <label for="kebab-case">kebab-case</label>
+    </div>
 </div>
 
-<div>
-    <div>
-        <textarea #text="ngModel" id="inputTextBox" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
-    </div>
-    
-    <div>
-        <textarea id="outputTextBox" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50"></textarea>
-    </div>
+<div class="textarea-container">
+    <textarea id="inputTextBox" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
+    <textarea id="outputTextBox" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50"></textarea>
 </div>
 
 <div>

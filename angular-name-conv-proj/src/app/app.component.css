@@ -1,0 +1,17 @@
+.title {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.title-container {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.title:active {
+    text-decoration: underline;
+}
+
+hr {
+    border: solid rgb(232, 232, 232) 0.1px;
+}
