@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AppComponent } from './app.component'
-import { LoginComponent } from './login/login.component';
 import { TextComponent } from './text/text.component';
 import { CreateComponent } from './create/create.component';
+import { LoginComponent } from './login/login.component';
 import { SavedComponent } from './saved/saved.component';
 
 const routes: Routes = [
   { path: '', component: TextComponent },
   { path: 'create', component: CreateComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'saved', component: SavedComponent},
+  { path: 'saved', component: SavedComponent}
 ];
 
 

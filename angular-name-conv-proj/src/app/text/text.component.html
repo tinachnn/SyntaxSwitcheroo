@@ -8,13 +8,8 @@
     <a routerLink="/login">Login</a>
 </ng-template>
 
-<!-- <div>
-    <app-convention-selector [value] = "inputConv"></app-convention-selector>
-    <app-convention-selector [value] = "outputConv" (valueEmitter)="onChildValueChange($event)"></app-convention-selector >
-</div> -->
-
 <div>
-    Convert to:
+    <span>Convert to: </span>
     <select class="convention" [(ngModel)]="convention" (change)="onConvChange()">
         <option value="camel-case">camelCase</option>
         <option value="snake-case">snake_case</option>
@@ -24,14 +19,17 @@
 </div>
 
 <div>
-    <textarea id="inputTextBox" [(ngModel)]="textAreaValue" (input)="sendDataToBackend()" placeholder="Enter text" rows="10" columns="50"></textarea>
+    <textarea id="inputTextBox" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
 </div>
 
 <div>
-    <textarea id="outputTextBox" [(ngModel)]="receivedData"  placeholder="Translation" rows="10" columns="50"></textarea>
+    <textarea id="outputTextBox" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50"></textarea>
 </div>
 
 <button id="favorite" (click)="saveData()">Favorite</button>
+<div *ngIf="message">
+    {{ message }}
+</div>
 
 <div>
     <a routerLink="/saved">GET FAVORITES</a>
