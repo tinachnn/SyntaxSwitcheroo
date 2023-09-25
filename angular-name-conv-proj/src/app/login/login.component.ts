@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -12,21 +11,25 @@ import { AuthenticationService } from '../services/authentication.service';
 export class LoginComponent {
   username : string = '';
   password : string = '';
-  constructor(private http : HttpClient, private router : Router, private authService : AuthenticationService) {}
+  errorMessage : string = '';
+  
+  constructor(private router : Router, private authService : AuthenticationService) {}
 
   onSubmit() {
     this.authService.login(this.username, this.password)
-      .subscribe( response => {
-        if (response.message == "Login successful") {
+      .subscribe({
+        next: response => {
+          // sets isLoggedIn and currentUser
           this.authService.isLoggedIn = true;
-          const user = response.user;
-          this.authService.currentUser = { 
-            'userId' : user['userId'], 
-            'username' : user['username'] 
-          };
+          const userId = response['userId'];
+          const username = response['username'];
+          this.authService.currentUser = { userId, username };
+          // routes user back to homepage
           this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.errorMessage = error.error;
         }
-      }
-    )
+    });
   }
 }

@@ -14,17 +14,17 @@ export class FavoriteService {
   };
 
   getFavorites(id : number) : Observable<any> {
-    const url = `http://127.0.0.1:5000/api/get_data/${id}`;
+    const url = `http://127.0.0.1:5000/api/get_favorites/${id}`;
     return this.http.get(url);
   }
 
-  addFavorite(id : number, input : string | undefined, output : string | undefined) : Observable<any>  {
-    const url = `http://127.0.0.1:5000/api/post_data/${id}`;
+  addFavorite(id : number, input : string, output : string) : Observable<any>  {
+    const url = `http://127.0.0.1:5000/api/add_favorite/${id}`;
     return this.http.post(url, { input , output });
   }
 
-  deleteFavorite(id : number, index : number) {
-    const url = `http://127.0.0.1:5000/api/delete_data/${id}/${index}`;
+  deleteFavorite(id : number, index : number) : Observable<any> {
+    const url = `http://127.0.0.1:5000/api/delete_favorite/${id}/${index}`;
     return this.http.delete(url);
   }
 }

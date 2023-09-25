@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { TextComponent } from './text/text.component';
-import { SavedComponent } from './saved/saved.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 import { LoginComponent } from './login/login.component';
 import { CreateComponent } from './create/create.component';
 
@@ -14,7 +14,7 @@ import { CreateComponent } from './create/create.component';
   declarations: [
     AppComponent,
     TextComponent,
-    SavedComponent,
+    FavoritesComponent,
     LoginComponent,
     CreateComponent,
   ],

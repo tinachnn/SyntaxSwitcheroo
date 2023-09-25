@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -8,26 +9,27 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./create.component.css']
 })
 export class CreateComponent {
-  constructor(private router : Router, private authService : AuthenticationService) {}
   username : string = '';
-  // email : string = '';
   password : string = '';
-  // firstName : string = '';
-  // lastName : string = '';
-  // birthdate : string = '';
+  errorMessage? : string;
+
+  constructor(private router : Router, private authService : AuthenticationService) {}
 
   onSubmit() {
     this.authService.createUser(this.username, this.password)
-      .subscribe(response => {
-        if (response.message == "Account created successfully") {
+      .subscribe({
+        next: (response) => {
+          // set isLoggedIn and currentUser
           this.authService.isLoggedIn = true;
-          const user = response.user;
-          this.authService.currentUser = { 
-            'userId' : user['userId'], 
-            'username' : user['username'] 
-          };
+          const userId = response.userId;
+          const username = response.username;
+          this.authService.currentUser = { userId, username };
+          // routes user back to homepage
           this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.errorMessage = error.error;
         }
-      })
+    })
   }
 }

@@ -1,0 +1,28 @@
+<div *ngIf="isLoggedIn; else loggedOut">
+    <div *ngIf="favorites.length > 0; else noFavorites">
+        <h3>Favorites:</h3>
+        <table>
+            <tr>
+                <th>Input</th>
+                <th>Output</th>
+            </tr>
+            <tr *ngFor="let f of favorites; let i = index">
+                <td>{{ f.input }}</td>
+                <td>{{ f.output }}</td>
+                <td><button (click)="onDelete(i)">Delete</button></td>
+            </tr>
+        </table>
+    </div>
+    
+    <ng-template #noFavorites>
+        <p>Add to favorites to get started</p>
+    </ng-template>
+
+    <a routerLink="/">Go back</a>
+</div>
+
+<ng-template #loggedOut>
+    <p>Please log in to see your favorites.</p>
+    <a routerLink="/login">Login</a>
+</ng-template>
+

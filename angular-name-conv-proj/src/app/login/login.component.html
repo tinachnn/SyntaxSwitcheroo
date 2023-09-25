@@ -1,16 +1,32 @@
 <div class="login-container">
     <h2>Login</h2>
-    <form (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="form.valid && onSubmit()" #form="ngForm">
         <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" [(ngModel)]="username" required>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" [(ngModel)]="username" #name="ngModel" required>
+            <div *ngIf="name.invalid && (name.dirty || form.submitted)" class="alert">
+                <div *ngIf="name.errors?.['required']">
+                    Name is required.
+                </div>
+            </div>
         </div>
+        
         <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" [(ngModel)]="password" #pw="ngModel" required>
+            <div *ngIf="pw.invalid && (pw.dirty || form.submitted)" class="alert">
+                <div *ngIf="pw.errors?.['required']">
+                    Password is required.
+                </div>
+            </div>
         </div>
+
         <button type="submit">Login</button>
     </form>
-</div>
 
-<a routerLink="/create">Don't have an account? Sign up!</a>
+    <div *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+    </div>
+
+    <a routerLink="/create">Don't have an account? Sign up!</a>
+</div>

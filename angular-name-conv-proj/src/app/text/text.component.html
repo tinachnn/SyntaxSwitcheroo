@@ -1,12 +1,14 @@
-<div *ngIf="isLoggedIn; else loggedOut">
-    <p>Welcome back {{ username }}!</p>
-    <button (click)="logout()">Logout</button>
+<div>
+    <div *ngIf="isLoggedIn; else loggedOut">
+        <span>Welcome back {{ username }}!</span>
+        <a href="#" (click)="onLogout()">Logout</a>
+    </div>
+    
+    <ng-template #loggedOut>
+        <a routerLink="/create">Create Account</a>
+        <a routerLink="/login">Login</a>
+    </ng-template>
 </div>
-
-<ng-template #loggedOut>
-    <a routerLink="/create">Create Account</a>
-    <a routerLink="/login">Login</a>
-</ng-template>
 
 <div>
     <span>Convert to: </span>
@@ -19,18 +21,23 @@
 </div>
 
 <div>
-    <textarea id="inputTextBox" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
+    <div>
+        <textarea #text="ngModel" id="inputTextBox" [(ngModel)]="inputData" (input)="onTextInput()" placeholder="Enter text" rows="10" columns="50"></textarea>
+    </div>
+    
+    <div>
+        <textarea id="outputTextBox" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50"></textarea>
+    </div>
 </div>
 
 <div>
-    <textarea id="outputTextBox" [(ngModel)]="outputData" placeholder="Translation" rows="10" columns="50"></textarea>
+    <button (click)="onFavorite()" id="favorite" [disabled]="inputData.trim() === ''">Favorite</button>
 </div>
 
-<button id="favorite" (click)="saveData()">Favorite</button>
 <div *ngIf="message">
     {{ message }}
 </div>
 
 <div>
-    <a routerLink="/saved">GET FAVORITES</a>
+    <a routerLink="/saved">Get favorites</a>
 </div>

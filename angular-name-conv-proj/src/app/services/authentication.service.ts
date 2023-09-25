@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class AuthenticationService {
   isLoggedIn : boolean = false;
-  currentUser? : any = null;
+  currentUser : any = null;
 
   constructor( private http : HttpClient) { }
 
@@ -18,12 +18,12 @@ export class AuthenticationService {
 
   createUser(username : string, password : string ) : Observable<any> {
     const url = 'http://127.0.0.1:5000/api/create';
-    return this.http.post(url, { username , password }, this.httpOptions)
+    return this.http.post(url, { username , password }, this.httpOptions);
   }
 
   login(username : string, password : string) : Observable<any> {
     const url = 'http://127.0.0.1:5000/api/login';
-    return this.http.post(url, { username, password }, this.httpOptions)
+    return this.http.post(url, { username, password }, this.httpOptions);
   }
 
   logout() {

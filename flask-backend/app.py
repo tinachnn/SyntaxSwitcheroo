@@ -13,7 +13,7 @@ CORS(app)
 bcrypt = Bcrypt(app)
 
 # convert input text to desired naming convention
-@app.route('/', methods=['POST'])
+@app.route('/api/convert', methods=['POST'])
 def handle_data():
     data = request.json
     text = data.get('text')
@@ -22,13 +22,14 @@ def handle_data():
     new_lines = []
     for line in lines:
         words = line.split()
-        func = get_function(conv)
-        new_words = [func(word) for word in words]
+        func = get_function(conv) # get appropriate pyhumps function
+        new_words = [func(word) for word in words] # translate each word then rejoin
         new_lines.append(" ".join(new_words))
     translation = "\n".join(new_lines)
 
     return jsonify(translation), 200
 
+# returns pyhumps function
 def get_function(convention):
     if convention == 'snake-case':
         return humps.decamelize
@@ -39,43 +40,30 @@ def get_function(convention):
     elif convention == 'kebab-case':
         return humps.kebabize
 
-# # get all items
-# @app.route('/api/get_data', methods=['GET'])
-# def get_data():
-#     response = dynamodb.scan(
-#             TableName=table_name,
-#         )
-#     items = response.get('Items', [])
-#     return jsonify(items), 200
-
-# get item by id
-@app.route('/api/get_data/<id>', methods=['GET'])
-def get_item(id):
+# get favorites by id
+@app.route('/api/get_favorites/<id>', methods=['GET'])
+def get_favorites(id):
     response = dynamodb.get_item(
         TableName=TABLE_NAME,
-        Key={
-            'userId': {'N': str(id)}
-        }
+        Key={'userId' : {'N': str(id)}}
     )
+    favorites = response['Item']['favorites']['L']
+    temp = [json.loads(f['S']) for f in favorites]
 
-    if 'Item' in response:
-        favorites = response['Item']['favorites']['L']
-        temp = [json.loads(f['S']) for f in favorites]
-        return jsonify(temp), 200  # Return the item as JSON
-    else:
-        return jsonify({"error": "Item not found"}), 404
+    return jsonify(temp), 200
 
-# update items
-@app.route('/api/post_data/<id>', methods=['POST'])
-def save_data(id):
+# add to favorites
+@app.route('/api/add_favorite/<id>', methods=['POST'])
+def add_favorite(id):
     data = request.json
 
-    if data.get('input') is None or data.get('output') is None:
-        error = 'Nothing to save here'
-        return jsonify(error), 400
+    # check for input text
+    if not data.get('input') or not data.get('output'):
+        return '', 400
 
     data = json.dumps(data)
 
+    # check if already exists in db
     response = dynamodb.query(
         TableName=TABLE_NAME,
         KeyConditionExpression='userId = :pk',
@@ -86,10 +74,11 @@ def save_data(id):
         }
     )
 
-    if response['Count'] != 0:
+    if response['Count']:
         error = 'Already favorited...'
         return jsonify(error), 400
 
+    # add to favorites
     response = dynamodb.update_item(
         TableName=TABLE_NAME,
         Key={'userId' : {'N' : id}},
@@ -99,18 +88,21 @@ def save_data(id):
             ':empty_list' : {'L' : []}
         }
     )
+
     return jsonify('Added to favorites!'), 200
 
-# delete
-@app.route('/api/delete_data/<id>/<idx>', methods=['DELETE'])
-def delete_data(id, idx):
+# delete from favorites
+@app.route('/api/delete_favorite/<id>/<idx>', methods=['DELETE'])
+def delete_favorite(id, idx):
+    # remove favorite at index
     update_exp = f"REMOVE favorites[{idx}]"
     response = dynamodb.update_item(
         TableName=TABLE_NAME,
         Key={'userId' : {'N' : id}},
         UpdateExpression=update_exp
     )
-    return jsonify({"message": "Data saved successfully"}), 200
+
+    return '', 200
 
 # log in user
 @app.route('/api/login', methods=['POST'])
@@ -119,75 +111,79 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    if username is None or password is None:
-        return jsonify({'message': 'Missing required field(s)'})
+    # check for required fields
+    if not username or not password:
+        return '', 400
 
-    # Check the username and password (add your authentication logic here)
+    # check that username exists in db
     response = dynamodb.query(
         TableName=TABLE_NAME,
         IndexName='username-index',
-        KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
-        ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
+        KeyConditionExpression= 'username = :val',
+        ExpressionAttributeValues= {':val': {'S': username}}
     )
 
     if response['Count'] == 0:
-        return jsonify({'message': 'Username does not exist'})
+        error = 'Username does not exist'
+        return jsonify(error), 401
 
     item = response['Items'][0]
+    # checks for correct password
     if bcrypt.check_password_hash(item['password']['B'], password):
-        return jsonify({'user': { 'userId' : item['userId']['N'] , 'username' : item['username']['S'] }, 'message': 'Login successful'}), 200
+        userId = item['userId']['N']
+        username = item['username']['S']
+        return jsonify({ 'userId' : userId , 'username' : username }), 200
+    
     else:
-        return jsonify({'message': 'Incorrect password'})
+        error = 'Incorrect password'
+        return jsonify(error), 401
 
 # create user
 @app.route('/api/create', methods=['POST'])
 def create_user():
     data = request.json
     username = data.get('username')
-    # email = data.get('email')
     password = data.get('password')
-    # first_name = data.get('firstName')
-    # last_name = data.get('lastName')
-    # birthdate = data.get('birthdate')
 
+    # checks for required fields
     if not username or not password:
-        return jsonify({'message': 'Missing required field(s)'})
+        return '', 400
 
-    # check if username exists in database
+    # check that username does not exist in db
     response = dynamodb.query(
         TableName=TABLE_NAME,
         IndexName='username-index',
-        KeyConditionExpression= 'username = :val',  # Replace with your attribute name and desired value
-        ExpressionAttributeValues= {':val': {'S': username}}  # Replace with the data type of your attribute
+        KeyConditionExpression= 'username = :val',
+        ExpressionAttributeValues= {':val': {'S': username}}
     )
     
-    if response['Count']:
-        return jsonify({'message' : 'Account with username already exists'})
-    else:
-        # get next number for user id
-        response = dynamodb.update_item(
-                TableName=TABLE_NAME,
-                Key={
-                    'userId': {'N' : str(0)}
-                },
-                UpdateExpression='SET next_num = next_num + :val',
-                ExpressionAttributeValues={':val': {'N' : str(1)}},
-                ReturnValues='UPDATED_NEW'
-        )
+    if response['Count'] > 0:
+        error = 'Account with username already exists'
+        return jsonify(error), 400
 
-        new_user_id = response['Attributes']['next_num']
-        hashed_password = bcrypt.generate_password_hash(password)
-        
-        # create user with new user id
-        response = dynamodb.put_item(
+    # get next number for user id
+    response = dynamodb.update_item(
             TableName=TABLE_NAME,
-            Item={
-                'userId': new_user_id,
-                'username': {'S': username},
-                'password': {'B': hashed_password}
-            }
+            Key={'userId' : {'N' : str(0)}},
+            UpdateExpression='SET next_num = next_num + :val',
+            ExpressionAttributeValues={':val': {'N' : str(1)}},
+            ReturnValues='UPDATED_NEW'
     )
-    return jsonify({'user': {'userId' : new_user_id['N'], 'username' : username }, 'message': "Account created successfully"}), 200
+
+    new_user_id = response['Attributes']['next_num']
+    hashed_password = bcrypt.generate_password_hash(password)
+    
+    # create user with new user id
+    response = dynamodb.put_item(
+        TableName=TABLE_NAME,
+        Item={
+            'userId': new_user_id,
+            'username': {'S': username},
+            'password': {'B': hashed_password}
+        }
+    )
+
+    return jsonify({'userId' : new_user_id['N'], 'username' : username }), 200
 
 if __name__ == '__main__':
     app.run()

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversionService {
-  private url = 'http://127.0.0.1:5000/';
+  private url : string = 'http://127.0.0.1:5000/api/convert';
 
   constructor(private http : HttpClient) { }
 
@@ -15,6 +15,6 @@ export class ConversionService {
   };
 
   convertText(text : string, conv : string) : Observable<any> {
-    return this.http.post(this.url, { text , conv }, this.httpOptions)
+    return this.http.post(this.url, { text , conv }, this.httpOptions);
   }
 }
