@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { HttpService } from '../http.service';
-import { MessageService } from '../message.service';
 import { FavoriteService } from '../favorite.service';
 import { AuthenticationService } from '../authentication.service';
 
@@ -18,7 +17,7 @@ export class TextConversionComponent {
   outputConv : string = 'camel-case';
   textAreaValue? : string;
   receivedData? : string;
-  constructor(private httpService: HttpService, private router : Router, private authService : AuthenticationService, private messageService : MessageService, private favoriteService : FavoriteService) {
+  constructor(private httpService: HttpService, private router : Router, private authService : AuthenticationService, private favoriteService : FavoriteService) {
     this.isLoggedIn = this.authService.isLoggedIn;
     if (this.isLoggedIn) {
       this.username = this.authService.currentUser.username;
@@ -30,7 +29,6 @@ export class TextConversionComponent {
   }
 
   sendDataToBackend() {
-    // this.messageService.add(`sendDataToBackend(): ${this.textAreaValue}`);
     console.log(this.textAreaValue);
     const url = 'http://127.0.0.1:5000/';
     
@@ -41,7 +39,6 @@ export class TextConversionComponent {
 
     this.httpService.postData(url, data)
       .subscribe(response => {
-        // this.messageService.add(`InputComponent: Sending data to output`)
         this.receivedData = response.text
       });
   } 
@@ -57,7 +54,7 @@ export class TextConversionComponent {
       }
 
       this.favoriteService.addFavorite(this.authService.currentUser.userId, data)
-        .subscribe(response => this.messageService.add(`InputComponent: Saving data`));
+        .subscribe(response => {});
     }
   }
 

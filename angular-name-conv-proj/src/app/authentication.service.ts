@@ -11,8 +11,14 @@ export class AuthenticationService {
 
   constructor( private httpService : HttpService) { }
 
+  createUser(username : string, password : string ) : Observable<any> {
+    const url = 'http://127.0.0.1:5000/api/create';
+    return this.httpService.postData(url, { username , password })
+  }
+
   login(username : string, password : string) : Observable<any> {
-    return this.httpService.postData('http://127.0.0.1:5000/api/login', { username, password })
+    const url = 'http://127.0.0.1:5000/api/login';
+    return this.httpService.postData(url, { username, password })
   }
 
   logout() {

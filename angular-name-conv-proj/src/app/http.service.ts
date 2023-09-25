@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MessageService } from './message.service';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -9,11 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class HttpService {
 
-  constructor(private http: HttpClient, private messageService : MessageService) { }
-
-  private log(message: string) {
-    this.messageService.add(`HttpService: ${message}`);
-  }
+  constructor(private http: HttpClient) { }
 
   getData(url : string) : Observable<any> {
     return this.http.get(url)
@@ -24,10 +19,6 @@ export class HttpService {
   };
 
   postData(url : string, data : any) : Observable<any> {
-    this.log(`Posting data to backend`)
     return this.http.post(url, data, this.httpOptions)
-      .pipe(
-        tap(_ => this.log(`Posted data`))
-      )
   }
 }

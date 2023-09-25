@@ -72,6 +72,20 @@ def save_data(id):
     data = request.get_json()
     table_name = 'users'
     json_object = json.dumps(data)
+
+    response = dynamodb.query(
+        TableName=table_name,
+        KeyConditionExpression='userId = :pk',
+        FilterExpression='contains(favorites, :val)',
+        ExpressionAttributeValues={
+            ':pk': {'N': id},
+            ':val': {'S': json_object}
+        }
+    )
+
+    if response['Count'] != 0:
+        return jsonify({"message": "Already exists"})
+
     response = dynamodb.update_item(
         TableName=table_name,
         Key={'userId' : {'N' : id}},

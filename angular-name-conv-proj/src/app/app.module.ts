@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { TextConversionComponent } from './text-conversion/text-conversion.component';
 import { ConventionSelectorComponent } from './convention-selector/convention-selector.component';
-import { MessagesComponent } from './messages/messages.component';
 import { SavedComponent } from './saved/saved.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,7 +16,6 @@ import { CreateAccountComponent } from './create-account/create-account.componen
     AppComponent,
     TextConversionComponent,
     ConventionSelectorComponent,
-    MessagesComponent,
     SavedComponent,
     LoginComponent,
     CreateAccountComponent,
