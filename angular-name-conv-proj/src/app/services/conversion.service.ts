@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -6,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ConversionService {
-  private url : string = 'http://127.0.0.1:5000/api/convert';
+  private url : string = environment.SERVER_URL + '/convert';
 
   constructor(private http : HttpClient) { }
 
