@@ -43,7 +43,11 @@ export class TextComponent {
 
   clearInput() {
     this.inputData = '';
+    this.autoExpand();
     this.onTextInput();
+
+    const textarea = this.elementRef.nativeElement.querySelector('textarea');
+    textarea.style.height = '200px';
   }
 
   // add item to favorites
